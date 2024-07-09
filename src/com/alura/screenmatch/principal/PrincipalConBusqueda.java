@@ -19,30 +19,35 @@ public class PrincipalConBusqueda {
         System.out.println("Escriba el nombre de la pelicula");
         var busqueda = lectura.nextLine();
 
-        String direccion = "http://www.omdbapi.com/?apikey=48892d69&t="+busqueda;
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()//obtener del servidor. Este es el builder de la peticion
-                .uri(URI.create(direccion))
-                .build();
-
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());//envia algo
-
-        String json = response.body();
-        System.out.println(json);
-
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-        TituloOmdb miTituloOmdb = gson.fromJson(json, TituloOmdb.class);
-        System.out.println(miTituloOmdb.toString());
+        String direccion = "http://www.omdbapi.com/?apikey=48892d69&t="+
+                busqueda.replace(" ","+");
         try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()//obtener del servidor. Este es el builder de la peticion
+                    .uri(URI.create(direccion))
+                    .build();
+
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());//envia algo
+
+            String json = response.body();
+            System.out.println(json);
+
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    .create();
+            TituloOmdb miTituloOmdb = gson.fromJson(json, TituloOmdb.class);
+            System.out.println(miTituloOmdb.toString());
+
             Titulo miTitulo = new Titulo(miTituloOmdb);
             System.out.println(miTitulo);
-        }catch (Exception e){
+        }catch (NumberFormatException e){
             System.out.println("Ocurrio un error: ");
             System.out.println(e.getMessage());
+        }catch (IllegalArgumentException e){
+            System.out.println("Error en la URI, verifique la direccion");
+        }catch (Exception e){//no conviene ser tan generico en la excepcion
+            System.out.println("Ocurrio un error inesperado");
         }
         System.out.println("Finalizo la ejecucion del programa");
     }
