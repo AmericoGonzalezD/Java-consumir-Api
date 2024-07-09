@@ -1,7 +1,12 @@
 package com.alura.screenmatch.modelos;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Titulo implements Comparable<Titulo>{
+    @SerializedName("Title")//anotacion de Gson para convertir los id json a mi estructura
+    //Cuando encuentre esa clave en el Json sabra que es se refiere a esta estructura
     private String nombre;
+    @SerializedName("Year")
     private int fechaDeLanzamiento;
     private boolean incluidoEnElPlan;
     private double sumaDeLasEvaluaciones;
@@ -66,5 +71,12 @@ public class Titulo implements Comparable<Titulo>{
     @Override
     public int compareTo(Titulo otroTitulo) {
         return this.getNombre().compareTo(otroTitulo.getNombre());
+    }
+
+    @Override
+    public String toString() {//para obtenerlo en un formato mas entendible
+        return
+                "nombre='" + nombre + '\'' +
+                ", fechaDeLanzamiento=" + fechaDeLanzamiento;
     }
 }
