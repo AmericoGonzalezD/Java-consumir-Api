@@ -47,7 +47,7 @@ public class PrincipalConBusqueda {
         }catch (IllegalArgumentException e){
             System.out.println("Error en la URI, verifique la direccion");
         }catch (Exception e){//no conviene ser tan generico en la excepcion
-            System.out.println("Ocurrio un error inesperado");
+            System.out.println(e.getMessage());
         }
         System.out.println("Finalizo la ejecucion del programa");
     }
